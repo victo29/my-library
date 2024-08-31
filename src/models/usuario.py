@@ -135,7 +135,7 @@ class Usuario:
             if user['senha'] == self.senha:
                 self.nome = user['nome']
                 session['logedin'] = True
-                session['usuario'] = {"nome":self.nome, "email":self.email }
+                session['usuario'] = {"nome":self.nome, "email":self.email, "id": user['id']}
                 
             else: 
                 raise Exception ("Email ou senha incorretos!")

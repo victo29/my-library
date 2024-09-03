@@ -1,10 +1,11 @@
 from models.conection  import connection
+from models.publicacao import Publicacao
 import uuid
 import os
 class PublicacaoService:
 
     
-    def _salvar_arquivo(self, file):
+    def _salvar_arquivo(self, file) -> str:
         novo_nome = str(uuid.uuid4())
         ext_file = os.path.splitext(file.filename)[1].lower()
         path = "data/" + novo_nome + ext_file
@@ -12,7 +13,7 @@ class PublicacaoService:
         
         return path
 
-    def inserir(self, publicacao):
+    def inserir(self, publicacao : Publicacao) -> bool | Exception:
 
         
         nome_livro = publicacao.nome_livro
@@ -27,11 +28,13 @@ class PublicacaoService:
             conn = connection()
             cursor = conn.cursor()
 
-            insert_query = f"INSERT INTO publicacao (path_foto_capa ,nome_livro , resenha_livro, avaliacao, qtd_paginas, id_usuario) VALUES (%s,%s,%s,%s,%s,%s)"
+            insert_query = "INSERT INTO publicacao (path_foto_capa ,nome_livro , resenha_livro, avaliacao, qtd_paginas, id_usuario) VALUES (%s,%s,%s,%s,%s,%s)"
             cursor.execute(insert_query,(path, nome_livro, resenha, avaliacao, quantidade_paginas, id_usuario))
             conn.commit()
             cursor.close()
             conn.close
+
+            return True
         except:
             raise Exception ("Erro ao salvar publicação")
 

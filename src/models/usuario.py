@@ -2,11 +2,10 @@ from models.conection  import connection
 from flask import session
 from hashlib import sha256
 import bleach
-import re
 
 class Usuario:
 
-    def __init__(self, email: str, senha: str, nome:str = "Default",) -> None:
+    def __init__(self, email: str, senha: str, nome:str | None = None,) -> None:
         self.nome = nome
         self.email = email
         self.senha = senha
@@ -44,25 +43,11 @@ class Usuario:
 
     
     # PRIVATE MÉTODOS
-    def _verifica_senha_fraca(self) -> bool:
-    
-        senha = self.senha
-        numeros = re.findall(r'\d', senha)
-
-        if len(senha) < 6 or len(numeros) < 2:
-            return True
-        
-       
-        return False
-
-
-
-
     def _verifica_nome_email (self) -> bool:
         conn = connection()
         cursor = conn.cursor()
         
-        select_query = f"SELECT * FROM usuario where nome = %s OR email = %s"
+        select_query = "SELECT * FROM usuario where nome = %s OR email = %s"
         cursor.execute(select_query,(self.nome,self.email))
         
         result = cursor.fetchone()
@@ -76,7 +61,7 @@ class Usuario:
     
 
 
-    def _verifica_existencia_usuario(self):
+    def _verifica_existencia_usuario(self) -> dict | bool:
         conn = connection()
         cursor = conn.cursor()
 
@@ -105,7 +90,7 @@ class Usuario:
 
     # PUBLIC MÉTODS
 
-    def cadastrar(self):
+    def cadastrar(self) -> bool | Exception :
   
         if(self._verifica_nome_email()):
 
@@ -116,18 +101,18 @@ class Usuario:
             conn = connection()
             cursor = conn.cursor()
 
-            insert_query = f"INSERT INTO usuario (nome, email, senha) VALUES (%s,%s,%s)"
+            insert_query = "INSERT INTO usuario (nome, email, senha) VALUES (%s,%s,%s)"
             cursor.execute(insert_query,(self.nome, self.email, self.senha))
             conn.commit()
             cursor.close()
             conn.close
-
+            return True
         else:
             raise Exception ("Email ou Nome já cadastrados")
     
 
         
-    def logar(self):
+    def logar(self) -> bool | Exception :
 
         user = self._verifica_existencia_usuario() 
        
@@ -137,6 +122,7 @@ class Usuario:
                 session['logedin'] = True
                 session['usuario'] = {"nome":self.nome, "email":self.email, "id": user['id']}
                 
+                return True
             else: 
                 raise Exception ("Email ou senha incorretos!")
         else:

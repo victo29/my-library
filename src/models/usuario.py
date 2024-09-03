@@ -5,7 +5,7 @@ import bleach
 
 class Usuario:
 
-    def __init__(self, email: str, senha: str, nome:str | None = None,) -> None:
+    def __init__(self, email: str, senha: str, nome:str = "Default") -> None:
         self.nome = nome
         self.email = email
         self.senha = senha

@@ -1,131 +1,52 @@
-from models.conection  import connection
-from flask import session
+from flask_login import UserMixin
 from hashlib import sha256
 import bleach
+from sqlalchemy import Column, Integer, String
+from models.conection import Base, SessionLocal
 
-class Usuario:
+class Usuario(Base, UserMixin):  
+    __tablename__ = 'usuario'
 
-    def __init__(self, email: str, senha: str, nome:str = "Default") -> None:
-        self.nome = nome
-        self.email = email
-        self.senha = senha
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100))
+    email = Column(String(100), unique=True)
+    password = Column(String(64))  
 
+    def __init__(self, email: str, password: str, name: str = "Default") -> None:
+        self.name = bleach.clean(name)
+        self.email = bleach.clean(email)
+        self.password = self._hash_password(password)
 
-
-    # Getter
-    @property
-    def nome(self):
-        return self._nome
-    
-    @property
-    def email(self):
-        return self._email
-    
-    @property
-    def senha(self):
-        return self._senha
-    
-    #Setter
-    @nome.setter
-    def nome(self, nome):
-        self._nome = bleach.clean(nome) 
-
-    @email.setter
-    def email(self, email):
-        self._email = bleach.clean(email)
-
-    @senha.setter
-    def senha(self, senha):
-
-        hash_senha = sha256(senha.encode())
-        self._senha = hash_senha.hexdigest()
-
-
-    
-    # PRIVATE MÉTODOS
-    def _verifica_nome_email (self) -> bool:
-        conn = connection()
-        cursor = conn.cursor()
+    @staticmethod
+    def _hash_password(password: str) -> str:
         
-        select_query = "SELECT * FROM usuario where nome = %s OR email = %s"
-        cursor.execute(select_query,(self.nome,self.email))
+        return sha256(password.encode()).hexdigest()
+
+    def _verify_if_exist_user(self):
         
-        result = cursor.fetchone()
-        cursor.close()
-        conn.close()
+        with SessionLocal() as session:
+            return session.query(Usuario).filter(Usuario.email == self.email).first()
 
-        if result:
-            return False
-        else:
-            return True
-    
-
-
-    def _verifica_existencia_usuario(self) -> dict | bool:
-        conn = connection()
-        cursor = conn.cursor()
-
-        select_query = "SELECT * FROM usuario WHERE email = %s"
-        cursor.execute(select_query, (self.email,))  # Passando o e-mail como uma tupla
-
-
-        result = cursor.fetchone()
-        cursor.close()
-        conn.close()
-
-        if result:
-      
-            column_names = [desc[0] for desc in cursor.description]
-
-            user = dict(zip(column_names, result))
-
-            cursor.close()
-            conn.close()
-
-            return user
-        else: 
-            return False
-
-
-
-    # PUBLIC MÉTODS
-
-    def cadastrar(self) -> bool | Exception :
-  
-        if(self._verifica_nome_email()):
-
-
-            #ADICIONAR VERIFICAÇÃO DE SENHA
-
-
-            conn = connection()
-            cursor = conn.cursor()
-
-            insert_query = "INSERT INTO usuario (nome, email, senha) VALUES (%s,%s,%s)"
-            cursor.execute(insert_query,(self.nome, self.email, self.senha))
-            conn.commit()
-            cursor.close()
-            conn.close
+    def register(self) -> bool | Exception:
+        
+        if not self._verify_if_exist_user():
+            with SessionLocal() as session:
+                session.add(self)
+                session.commit()
             return True
         else:
-            raise Exception ("Email ou Nome já cadastrados")
-    
+            raise Exception("Email já cadastrados")
 
+    def login(self) -> bool | Exception:
         
-    def logar(self) -> bool | Exception :
-
-        user = self._verifica_existencia_usuario() 
+        user = self._verify_if_exist_user()
+        if user and user.password == self.password:
+            self.name = user.name
+            self.id = user.id  
+            return user  
+        else:
+            raise Exception("Email ou senha incorretos!")
+    
+    def get_id(self):
        
-        if user:
-            if user['senha'] == self.senha:
-                self.nome = user['nome']
-                session['logedin'] = True
-                session['usuario'] = {"nome":self.nome, "email":self.email, "id": user['id']}
-                
-                return True
-            else: 
-                raise Exception ("Email ou senha incorretos!")
-        else:
-            raise Exception ("Email ou senha incorretos!")
-
-      
+        return str(self.id)  

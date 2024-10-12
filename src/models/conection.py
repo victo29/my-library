@@ -1,11 +1,13 @@
-import mysql.connector
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-def connection():
-    # Conectar ao banco de dados MySQL
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="victor@123456",
-        database="minha_biblioteca"
-    )
-    return conn
+engine = create_engine("mysql+mysqlconnector://user:@localhost/my_library")
+
+Base = declarative_base()
+
+SessionLocal = sessionmaker(bind=engine)
+
+def get_db():
+
+    db = SessionLocal()
+    return db  

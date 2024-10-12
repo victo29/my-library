@@ -1,27 +1,27 @@
-document.getElementById("formCadastro").addEventListener("submit", (event)=>{
+document.getElementById("form").addEventListener("submit", (event)=>{
     event.preventDefault();
 
     const alertBox = document.getElementById("alertBox");
-    const form = document.getElementById("formCadastro");
+    const form = document.getElementById("form");
     const formData = new FormData(form);
     
-    fetch("http://127.0.0.1:5000/cadastrar-post", {
+    fetch("http://127.0.0.1:5000/cadastrar", {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())  // Converte a resposta para JSON
+    .then(response => response.json()) 
     .then(resposta => {
         alertBox.innerHTML = ""
         const alertDiv = document.createElement("div");
         alertDiv.role = "alert";
         if (resposta.error) {
             
-            alertDiv.className = "alert alert-danger mt-2 text-center";
+            alertDiv.className = "error";
             alertDiv.textContent = resposta.error;
             
         } else {
 
-            alertDiv.className = "alert alert-success mt-2 text-center";
+            alertDiv.className = "success";
             alertDiv.textContent = resposta.message;
 
         }
@@ -32,7 +32,7 @@ document.getElementById("formCadastro").addEventListener("submit", (event)=>{
         alertBox.innerHTML = ""
         const alertDiv = document.createElement("div");
         alertDiv.role = "alert";
-        alertDiv.className = "alert alert-warning mt-2 text-center";
+        alertDiv.className = "warning";
         alertDiv.textContent = 'Ocorreu um erro ao tentar cadastrar o usuário.'
         alertBox.appendChild(alertDiv);
     });

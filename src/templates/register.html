@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/loginRegisterStyle.css') }}">
+    <title>My library</title>
+</head>
+<body>
+
+    <main>
+        <section class="leftSection">
+            <div class="header">
+                <div class="boxImage">
+                    <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="">
+                </div>
+            </div>
+            <div class="text">
+                <h1>Cadastre-se</h1>
+            </div>
+            <div class="divForm">
+                <form id="form" method="POST">
+
+                    <div class="boxEmail">
+                    <label for="" class="form-label">Email</label><br>
+                    <input type="email" name="email" class="form-control" id="InputEmail" aria-describedby="emailHelp" required>
+                    <div id="emailHelp" class="form-text">Nunca compartilharemos seu e-mail com mais ninguém.</div>
+                    </div>
+
+                    <div class="boxInput">
+                        <label for="" class="form-label">Nome</label><br>
+                        <input type="text" name="name" class="form-control" id="InputName" required>
+                    </div>
+
+                    <div class="boxInput">
+                        <label for="" class="form-label">Senha</label><br>
+                        <input type="password" name="password" class="form-control" id="InputPassword" required>
+                    </div>
+
+                   
+
+                    <a href="logar">Já é cadastrado?</a><br>
+                    
+                    <button type="submit" class="btn">CADASTRAR</button>
+
+                    <div id="alertBox">
+
+                    </div>
+                </form>
+            </div>
+        </section>
+
+
+        <section class="rightSection">
+            
+            <div>
+                <img src="{{ url_for('static', filename='img/bookLogo.svg') }}" alt="">
+            </div>
+
+        </section>
+    </main>
+    
+    <script src="{{ url_for('static', filename='js/registerScript.js') }}"></script>
+</body>
+</html>

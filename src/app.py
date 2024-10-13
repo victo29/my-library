@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_login import LoginManager
-from models.conection import get_db  # Presumindo que você tenha esta função
+from models.conection import get_db  
 from controllers.UsuarioController import usuario_bp
 from models.usuario import Usuario
 # from controllers.PublicacaoController import publicacao_bp
@@ -12,14 +12,14 @@ app.register_blueprint(usuario_bp)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-# Define a rota de login
+
 login_manager.login_view = 'usuario_bp.logar'
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    # Aqui você deve carregar o usuário do banco de dados
-    with get_db() as session:  # Use a função de obter a sessão que você definiu
+    
+    with get_db() as session: 
         return session.query(Usuario).filter_by(id=user_id).first()
 
 

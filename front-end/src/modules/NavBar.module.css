@@ -1,0 +1,172 @@
+.navBar{
+    background-color: blue;
+    width: 100%;
+    height: 90px;
+    border-radius: 0px 0px 5dvh 5dvh;
+    background-image: linear-gradient(90deg, #D24E65, #F68B4E);
+    display: flex;
+    align-items: center;
+}
+
+@media (min-width: 1000 ) {
+    .navBar{
+        margin-right: 90px;
+    }
+}
+
+.boxAnchor{
+    width: 15%;
+    background-color: white;
+    height: 47px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.25);
+    min-width: 80px;
+    margin-right: 10px;
+}
+
+.boxAnchor a{
+    text-decoration: none;
+    color: rgba(92, 92, 92, 1);
+    font-weight: 400;
+    font-size: large;
+    padding: 10% 20% 10% 20% ;
+    
+}
+
+
+.boxForm{
+    width: 65%;
+}
+
+.form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.form input{
+    width: 90%;
+    padding-left: 20px ;
+    height: 47px;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0px 2px 25px rgba(0, 0, 0, 0.25);
+    font-weight: 300;
+    font-size: medium;
+}
+
+.form input:focus{
+    border: 2px solid #aa2d42;
+    outline: 1px solid #c9364f; 
+}
+
+.boxImage{
+    width: 20%;
+    
+}
+
+.boxImage img{
+    margin-left: 60px;
+    
+}
+.topNavBar{
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttonToggle{
+    padding-right: 60px ;
+    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonToggle{
+    padding-right: 30px ;
+    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    display: none;
+    
+}
+
+.buttonToggle button{
+    width: 50px;
+    height: 30px;
+    border: none;
+    background-color: transparent;
+    color: white;
+    border-radius: 10px;
+}
+
+@media (max-width: 999px) {
+
+    .navBar{
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+    .boxForm{
+        width: 100%;
+        margin-bottom: 20px;
+        top: 110px;
+        position: absolute;
+        
+        
+    }
+    .boxAnchor{
+        position: absolute;
+        top:170px
+    }
+    .boxImage{
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 40px;
+    }
+    .boxImage img{
+        margin-left: 40px;
+    }
+    .topNavBar{
+        width: 100%;
+        margin-top: 15px;
+    }
+    .buttonToggle{
+        display: block;
+    }
+
+}
+
+.activeToggle{
+    animation: toggle 1s forwards;
+}
+
+.desactiveToggle{
+    animation: reverseToggle 1s forwards;
+}
+
+@keyframes toggle {
+    0% {
+        height: 99px; 
+    }
+    100%{
+        height: 250px;
+    }
+    
+}
+
+@keyframes reverseToggle{
+    0% {
+        height: 250px;
+    }
+    100%{
+        height: 99px;
+       
+    }
+}

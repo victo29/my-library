@@ -1,0 +1,67 @@
+.fistSection{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.boxText{
+    width: 500px;
+    height: 150px;
+    margin-left: 40px ;
+}
+
+.boxText h1{
+    font-size: x-large;
+    color: rgba(84, 84, 84, 1);
+    font-weight: 600;
+}
+.boxText h1{
+    font-size: x-large;
+    color: rgba(84, 84, 84, 1);
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.boxText h2{
+    font-size:  medium;
+    color: rgba(134, 134, 134, 1);
+    font-weight: 600;
+    text-align: justify;
+}
+
+.boxUser{
+    width: 500px;
+    text-align: center;
+}
+
+.boxUser h1{
+    font-size: x-large;
+    color: rgba(84, 84, 84, 1);
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.boxUser button{
+    border: none ;
+    width: 110px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+@media (max-width: 1039px) {
+    .boxText{
+        display: none;
+    }
+    .boxUser{
+        width: 300px;
+    }
+    .fistSection{
+        align-items: center;
+        justify-content: center;
+    }
+
+    
+}
